@@ -1,5 +1,5 @@
-DISPLAY_NAME=Braixen Atendimento
-DESCRIPTION=Bot de atendimento do Braixen's House.
+DISPLAY_NAME=Brix Bot
+DESCRIPTION=Bot desenvolvido pro @OBraixen - dsc.gg/braixen.
 MAIN=main.py
-MEMORY=100
+MEMORY=150
 VERSION=recommended
