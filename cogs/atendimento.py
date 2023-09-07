@@ -129,7 +129,7 @@ class suporte_bh(discord.ui.Select): #a class aqui recebeu o nome de Dropdown pa
             staff = id_cargo_atendente
             mensagemcanal = "O Braixen's House está sujeito a avaliação de requisitos e a possiveis cobranças pela sua divulgação. \n\nNesta Modalidade **todas as parcerias** precisam ser feitas em conjunto com um **sorteio** pois será dessa forma que iremos efetuar **sua divulgação.**\n*Adiante seu atendimento enviando o link do seu servidor para fazermos a analise dele*"
             categoriadeatendimento = id_categoria_staff
-            await interaction.response.send_message("**Deseja divulgar algo no Braixen's House?** \n\nNo Momento o *Braixen's House* **Não está Aceitando** novas divulgações nem pedidos de parcerias.\n\nEm Breve voltaremos com esse sistema.",ephemeral=True)
+            await interaction.response.send_message("**Deseja divulgar algo no Braixen's House?** \nPara **divulgar seu servidor, bot ou outros projetos.**\nO *Braixen's House* pode **te ajudar com isso** mas estamos **sujeito a avaliação de requisitos** e a possiveis **cobranças pela sua divulgação**. \n\nNesta Modalidade **todas as parcerias** precisam ser feitas em conjunto com um **sorteio** pois será dessa forma que iremos efetuar **sua divulgação.**\n**Visite o Canal** de <#982990181307142174> e **confirá os topicos 2 e 3** que informamos com detalhes como **funciona e como avaliamos**.\n\n **Não abra o ticket sem ler sobre nosso protocolo.**",ephemeral=True,view=CreateTicket())
         
         elif self.values[0] == "Staff":
             emojiglobal = "💼"
@@ -312,7 +312,8 @@ class CreateTicket(discord.ui.View):
             colour=discord.Color.yellow(),
             description=f"*Atendimento: {tipoticket}*\nResponsavel: <@&{staff}>"
         )
-        embedticket.set_author(name=f"{botname}",icon_url=f"{botavatar}")
+        #a linha a baixo foi comentada pois o bot de teste não tinha avatar
+        #embedticket.set_author(name=f"{botname}",icon_url=f"{botavatar}")
         embedticket.set_thumbnail(url="https://i.imgur.com/ixqtABY.png")
         embedticket.set_footer(text="Você pode usar `/atendimento fechar` para encerrar o atendimento!")
                 
