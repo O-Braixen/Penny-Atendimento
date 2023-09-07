@@ -14,9 +14,12 @@ Todas os comandos estão com comentarios e explicados para facil modificação e
  - 3 Paineis de Dropdown (2 para um servidor e 1 para um segundo servidor);
  - Suporte aos paineis serem persistentes;
  - Adicionado suporte para salvar chat ao fechar ticket
- - Suporte a context_menu para alguns comandos
+ - Suporte a **context_menu** para alguns comandos
  - suporte a .env adicionado
+ - **codigo em cog facil de receber updates**
  - varios comandos voltados para usuarios
+ - comando de avaliação de atendimento **novo**
+ - comando de abertura de ticket de entrevista **novo**
 
 **Lista dos comandos de context menu**
  - Usuario Avatar
@@ -31,11 +34,11 @@ Todas os comandos estão com comentarios e explicados para facil modificação e
 - /onwer sair
 - /onwer bot-name
 - /onwer bot-avatar
-
+---------------------------
 - /bot ping
 - /bot info
 - /bot help
-
+---------------------------
 - /usuario avatar
 - /usuario info
 - /usuario abraçar
@@ -44,31 +47,47 @@ Todas os comandos estão com comentarios e explicados para facil modificação e
 - /usuario carinho
 - /usuario cafuné
 - /usuario afk
-
+---------------------------
 - /servidor icone
 - /servidor banner
 - /servidor splash
 - /servidor info
-
+---------------------------
 - /admin banir 
 - /admin desbanir 
 - /admin kick 
-
+---------------------------
 - /chat deletar 
 - /chat limpar 
 - /chat criar 
 - /chat info
-
+---------------------------
 - /canal deletar 
 - /canal limpar 
 - /canal criar 
 - /canal info
-
+---------------------------
 - /cargo adicionar 
 - /cargo remover 
 - /cargo trocar 
 - /cargo info
+---------------------------
+- /painel suporte-bh
+- /painel servicos-bh
+- /painel tribunal
+---------------------------
+- /atendimento fechar
+- /atendimento encerrar
+- /atendimento adicionar
+- /atendimento remover
+- /atendimento avaliar
+- /atendimento entrevista
+
 
 **Variaveis exigidas**
 
-- donoid
+- SUA ID em DONO_ID
+- Token do seu bot em DISCORD_TOKEN
+- Token da square em square_token
+- Id do seu bot na square em square_idaplication
+- todas as outras variaveis de cargos e canais para funcionamento da parte de atendimento.
