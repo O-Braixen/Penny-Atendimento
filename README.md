@@ -29,11 +29,11 @@ Todas os comandos estão com comentarios e explicados para facil modificação e
 
 **Lista dos comandos**
 
-- /onwer say
-- /onwer listar
-- /onwer sair
-- /onwer bot-name
-- /onwer bot-avatar
+- /owner say
+- /owner listar
+- /owner sair
+- /owner bot-name
+- /owner bot-avatar
 ---------------------------
 - /bot ping
 - /bot info
