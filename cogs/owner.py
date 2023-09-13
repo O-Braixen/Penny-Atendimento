@@ -19,7 +19,7 @@ square_idaplication = os.getenv("square_idaplication") #acessa e define o id do 
 mensagemerro = "<:ew:969703224825225266> Ue? Isso não funcionou como deveria... \nAcho que você tentou usar isso em um canal errado ou não tem permissão para tal função <:derp:969703169670131812>"
 
 #inicio dessa classe
-class onwer(commands.Cog):
+class owner(commands.Cog):
   def __init__(self, client: commands.Bot):
     self.client = client
 
