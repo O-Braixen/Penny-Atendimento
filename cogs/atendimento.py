@@ -2,7 +2,7 @@ import discord,os,asyncio
 from discord.ext import commands
 from discord import app_commands,utils
 from datetime import datetime
-from cogs.onwer import getdonoid,getmensagemerro
+from cogs.owner import getdonoid,getmensagemerro
 from dotenv import load_dotenv
 
 #GET INFO USO
