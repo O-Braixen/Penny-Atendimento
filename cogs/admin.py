@@ -2,7 +2,7 @@ import discord,os,asyncio
 from discord.ext import commands
 from discord import app_commands
 from datetime import datetime
-from cogs.onwer import getdonoid,getmensagemerro
+from cogs.owner import getdonoid,getmensagemerro
 
 #coleta as informações de outro .py
 donoid = getdonoid()
