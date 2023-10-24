@@ -219,6 +219,9 @@ class admin(commands.Cog):
   @commands.has_permissions(manage_roles=True)
   async def roleadd(self,interaction: discord.Interaction, membro: discord.Member, cargo: discord.Role):
     print (f"Usuario: {interaction.user.name} usou add cargo")
+    if interaction.user != membro and membro.top_role.position >= interaction.user.top_role.position or interaction.user.top_role.position <= cargo.position:
+      await interaction.response.send_message(erropermissão, ephemeral=True)
+      return
     try:
       if interaction.permissions.manage_roles:
         resposta = discord.Embed(
@@ -238,6 +241,9 @@ class admin(commands.Cog):
   @commands.has_permissions(manage_roles=True)
   async def rolerem(self,interaction: discord.Interaction, membro: discord.Member, cargo: discord.Role):
     print (f"Usuario: {interaction.user.name} usou rem cargo")
+    if interaction.user != membro and membro.top_role.position >= interaction.user.top_role.position or interaction.user.top_role.position <= cargo.position:
+      await interaction.response.send_message(erropermissão, ephemeral=True)
+      return
     try:
       if interaction.permissions.manage_roles:
         resposta = discord.Embed(
