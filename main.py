@@ -2,18 +2,29 @@
 import discord,os
 from os import listdir
 from discord.ext import commands
+from discord.errors import HTTPException, LoginFailure
 from discord import app_commands
 from dotenv import load_dotenv
+
+
+# Verifica se o arquivo .env existe
+if not os.path.exists('.env'):
+    print("O arquivo .env não foi encontrado, por favor edite o Exemplo.env para .env somente com as informações do seu bot.")
+    exit()
+
 
 #CARREGA E LE O ARQUIVO .env
 load_dotenv() #load .env
 token_bot = os.getenv("DISCORD_TOKEN") #acessa e define o token do bot
+donoid = os.getenv("DONO_ID") #acessa e define a ID do dono do bot
+prefixo = '-br' # Define o prefixo do bot, pode alterar se quiser
+
 
 #classe basica de iniciação do bot
 class Client(commands.Bot):
     def __init__(self) -> None:
         # o command_prefix está definindo um prefixo para o bot, você pode alterar caso desejar porém nessa versão não usamos nenhum prefixo
-        super().__init__(command_prefix='-br', intents=discord.Intents().all())
+        super().__init__(command_prefix=prefixo, intents=discord.Intents().all())
         self.synced = False #Nós usamos isso para o bot não sincronizar os comandos mais de uma vez
         self.cogslist = []
         #o item a baixo faz a leitura da lista de cogs que são os outros arquivos de codigo separado e os registra.        
@@ -36,10 +47,17 @@ class Client(commands.Bot):
             self.synced = True
             print(f"Comandos sicronizados: {self.synced}")
         print(f"\no Bot {self.user} Já esta Online e disponivel")
+        print(f"\nID do dono é {donoid}")
     
 
 #COISA DO MAIN NÂO MEXER
+
 client = Client()
 
 #LIGA O BOT e o mantem online
-client.run(token_bot)
+try:
+    client.run(token_bot)
+except LoginFailure as e:
+    print("Erro ao fazer login: O token fornecido é inválido ou incorreto.")
+except Exception as e:
+    print(f"Erro desconhecido: {e}")
