@@ -1,4 +1,4 @@
-﻿git+https://github.com/Rapptz/discord.py #python discord
+discord.py #python discord
 python-dotenv #dependencia dot env - responsavel por ler o arquivo .env
 PyNaCl
 requests
