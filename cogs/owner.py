@@ -19,7 +19,7 @@ square_idaplication = os.getenv("square_idaplication") #acessa e define o id do 
 mensagemerro = "<:ew:969703224825225266> Ue? Isso não funcionou como deveria... \nAcho que você tentou usar isso em um canal errado ou não tem permissão para tal função <:derp:969703169670131812>"
 
 #inicio dessa classe
-class owner(commands.Cog):
+class onwer(commands.Cog):
   def __init__(self, client: commands.Bot):
     self.client = client
 
@@ -115,28 +115,31 @@ class owner(commands.Cog):
   @bot.command(name="info",description='🤖⠂Exibe informações sobre o bot')
   async def botinfo(self, interaction: discord.Interaction):
     print (f"Usuario: {interaction.user.name} usou botinfo")
-    res_information =  requests.get(f"https://api.squarecloud.app/v2/apps/{square_idaplication}", headers={"Authorization": square_token})
-    res_information = res_information.json()
-    res_status =  requests.get(f"https://api.squarecloud.app/v2/apps/{square_idaplication}/status", headers={"Authorization": square_token})
-    res_status = res_status.json()
-    resposta = discord.Embed(
-            colour=discord.Color.yellow(),
-            title=f"🦊┃Informações do {self.client.user.name}",
-            description=f"{res_information['response']['app']['desc']}"
-        )
-    if self.client.user.avatar:
-      resposta.set_thumbnail(url=f"{self.client.user.avatar.url}")
-    resposta.add_field(name="🖥️⠂squarecloud.app", value=f"```{res_information['response']['app']['cluster']}```", inline=True)
-    resposta.add_field(name="👨‍💻⠂Linguagem", value=f"```{res_information['response']['app']['language']}```", inline=True)
-    resposta.add_field(name="🦊⠂Dono", value=f"<@{donoid}>", inline=True)
-    resposta.add_field(name="📊⠂Ram", value=f"```{(res_status['response']['ram'])} / {res_information['response']['app']['ram']} MB```", inline=True)
-    resposta.add_field(name="🌡⠂CPU", value=f"```{res_status['response']['cpu']}```", inline=True)
-    resposta.add_field(name="🕐⠂Uptime", value=f"<t:{round(res_status['response']['uptime']/1000)}:R>", inline=True)
-    resposta.add_field(name="🌐⠂Rede", value=f"```{res_status['response']['network']['total']}```", inline=True)
-    resposta.add_field(name="🏓⠂Ping", value=f"```{round(self.client.latency * 1000)}ms```", inline=True)
-    resposta.add_field(name="🔮⠂Menção", value=f"<@{self.client.user.id}>", inline=True)
+    try:
+      res_information =  requests.get(f"https://api.squarecloud.app/v2/apps/{square_idaplication}", headers={"Authorization": square_token})
+      res_information = res_information.json()
+      res_status =  requests.get(f"https://api.squarecloud.app/v2/apps/{square_idaplication}/status", headers={"Authorization": square_token})
+      res_status = res_status.json()
+      resposta = discord.Embed(
+              colour=discord.Color.yellow(),
+              title=f"🦊┃Informações do {self.client.user.name}",
+              description=f"{res_information['response']['app']['desc']}"
+          )
+      if self.client.user.avatar:
+        resposta.set_thumbnail(url=f"{self.client.user.avatar.url}")
+      resposta.add_field(name="🖥️⠂squarecloud.app", value=f"```{res_information['response']['app']['cluster']}```", inline=True)
+      resposta.add_field(name="👨‍💻⠂Linguagem", value=f"```{res_information['response']['app']['language']}```", inline=True)
+      resposta.add_field(name="🦊⠂Dono", value=f"<@{donoid}>", inline=True)
+      resposta.add_field(name="📊⠂Ram", value=f"```{(res_status['response']['ram'])} / {res_information['response']['app']['ram']} MB```", inline=True)
+      resposta.add_field(name="🌡⠂CPU", value=f"```{res_status['response']['cpu']}```", inline=True)
+      resposta.add_field(name="🕐⠂Uptime", value=f"<t:{round(res_status['response']['uptime']/1000)}:R>", inline=True)
+      resposta.add_field(name="🌐⠂Rede", value=f"```{res_status['response']['network']['total']}```", inline=True)
+      resposta.add_field(name="🏓⠂Ping", value=f"```{round(self.client.latency * 1000)}ms```", inline=True)
+      resposta.add_field(name="🔮⠂Menção", value=f"<@{self.client.user.id}>", inline=True)
 
-    await interaction.response.send_message(embed=resposta)
+      await interaction.response.send_message(embed=resposta)
+    except:
+      await interaction.response.send_message("Não foi configurado corretamente as informações para coleta de informações da squarecloud, verifique o arquivo .env")
 
 
   #help comando
