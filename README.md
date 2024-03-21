@@ -83,6 +83,12 @@ Todas os comandos estão com comentarios e explicados para facil modificação e
 - /atendimento avaliar
 - /atendimento entrevista
 
+**Instruções de instalação**
+
+Caso você rode na Squarecloud (onde esse codigo foi planejado) basta editar todo o arquivo exemplo.env e ao final deve renomea-lo para apenas .env e compacte tudo e envie para a squarecloud.
+
+Caso queira rodar localmente recomendo o uso do VScode e para instalar os requisitos use *pip install -r requirements.txt* para que o sistema instale todos os requisitos antes de iniciar seu bot.
+
 
 **Variaveis exigidas**
 
