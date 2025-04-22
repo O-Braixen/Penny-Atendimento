@@ -1,4 +1,4 @@
-# Brix
+# Penny - A atendente multi-uso
 
 ![bot image](img/Brix%20Braixen.png)
 
