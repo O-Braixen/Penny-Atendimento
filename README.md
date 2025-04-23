@@ -1,9 +1,11 @@
 # Penny - A atendente multi-uso
 
-![bot image](img/Brix%20Braixen.png)
+![bot image](img/Penny_avatar.jpg)
 
 
 Codigo em Python do Bot de interação e atendimento do Braixen's House com suporte a Cogs
+
+**AVISO**: Esse repositorio antes se chamava Brix, pois ele antes era um bot de atendimento, mas agora se tornou um bot multi tarefas, e esse repositorio foi trocado para Penny (atendente da BH) nas proximas semanas estarei revisando 100% desse codigo, adicionando também recurso de copiador de chat e acompanhante de boost.
 
 Esse codigo foi desenvolvido e aprimorado a partir do [antigo Braixen Atendimento](https://github.com/O-Braixen/Braixen-Atendimento) usando os conhecimentos do curso do Dominado o discord do [Youtuber Dune](https://www.youtube.com/@DuneDiscord) e modificado para atender aos requisitos da comunidade [Braixen's House](https://discord.gg/ZRHwWydQFu)
 
