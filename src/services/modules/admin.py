@@ -2,7 +2,7 @@ import discord,os,asyncio
 from discord.ext import commands
 from discord import app_commands
 from datetime import datetime
-from cogs.owner import getdonoid,getmensagemerro
+from src.services.modules.owner import getdonoid,getmensagemerro
 
 #coleta as informações de outro .py
 donoid = getdonoid()
@@ -11,10 +11,23 @@ mensagemerro = getmensagemerro()
 erropermissão = "❌┃ Kyuuu... Parece que eu não tenho permissão de fazer isso."
 errobanir = "❌┃ Kyuuu... Parece que eu não tenho permissão de banir ou esse membro já foi banido."
 
+
+
+
+
+
+
 #inicio dessa classe
 class admin(commands.Cog):
   def __init__(self, client: commands.Bot):
     self.client = client
+
+
+
+
+
+
+
 
   #faz esse cara ser ouvido no main
   @commands.Cog.listener()
@@ -22,8 +35,22 @@ class admin(commands.Cog):
     print("Cog admin carregado.")
     
 
+
+
+
+
+
+
+
+
+
   #GRUPO ADMINISTRADOR - grupo de comandos
   admin=app_commands.Group(name="admin",description="Comandos de controle do bot.")
+
+
+
+
+
 
    #COMANDO BANIR - dentro do grupo admin
   @admin.command(name="banir",description='💼⠂Banir um membro do servidor')
@@ -45,6 +72,16 @@ class admin(commands.Cog):
     except discord.Forbidden:
       await interaction.response.send_message(errobanir, ephemeral=True)
   
+
+
+
+
+
+
+
+
+
+
 
 #COMANDO DESBANIR - dentro do grupo admin
   @admin.command(name="desbanir",description='💼⠂Desbanir um membro do servidor')
@@ -69,6 +106,15 @@ class admin(commands.Cog):
       await interaction.response.send_message(errobanir, ephemeral=True)
   
 
+
+
+
+
+
+
+
+
+
     #COMANDO KICK - dentro do grupo admin
   @admin.command(name="kick", description='💼⠂Expulsar um membro do servidor')
   @app_commands.describe(membro="Qual membro será expulso?", razão="Qual a razão da expulsão?")
@@ -92,8 +138,29 @@ class admin(commands.Cog):
 
     
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   #GRUPO CHAT 
   chat=app_commands.Group(name="chat",description="Comandos de chat do bot.")
+
+
+
+
+
+
+
+
 
   #COMANDO DELETE CHAT
   @chat.command(name="deletar",description='🗨️⠂Deleta um chat existente')
@@ -104,6 +171,16 @@ class admin(commands.Cog):
         await asyncio.sleep(2.0)
         await interaction.channel.delete()
     else: await interaction.response.send_message(mensagemerro,ephemeral=True)
+
+
+
+
+
+
+
+
+
+
 
 
   #COMANDO PRUNE CHAT
@@ -117,6 +194,15 @@ class admin(commands.Cog):
     else: await interaction.response.send_message(mensagemerro,ephemeral=True)
 
 
+
+
+
+
+
+
+
+
+
  #COMANDO CRIAR CHAT
   @chat.command(name="criar",description='🗨️⠂Crie um novo chat')
   @app_commands.describe(nome="informe um nome para o chat")
@@ -128,6 +214,15 @@ class admin(commands.Cog):
         else: novo_canal = await interaction.guild.create_text_channel(nome,category=categoria)
         await interaction.response.send_message(f"<:stick:969703475720126464> - Criei o canal de texto {novo_canal.mention} para você.",ephemeral=True)
     else: await interaction.response.send_message(mensagemerro,ephemeral=True)
+
+
+
+
+
+
+
+
+
 
 
 #COMANDO INFO CHAT
@@ -160,8 +255,28 @@ class admin(commands.Cog):
     await interaction.response.send_message(embed=resposta)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   #GRUPO CANAL 
   canal=app_commands.Group(name="canal",description="Comandos de canais do bot.")
+
+
+
+
+
+
+
 
   #COMANDO DELETE CANAL
   @canal.command(name="deletar",description='🗨️⠂Deleta um canal existente')
@@ -171,6 +286,12 @@ class admin(commands.Cog):
         await interaction.response.send_message("✅┃bye bye canal...")
         await canal.delete()
     else: await interaction.response.send_message(mensagemerro,ephemeral=True)
+
+
+
+
+
+
 
   #COMANDO CRIAR CANAL
   @canal.command(name="criar",description='🗨️⠂Crie um novo canal')
@@ -183,6 +304,16 @@ class admin(commands.Cog):
         else: novo_canal = await interaction.guild.create_voice_channel(nome,category=categoria)
         await interaction.response.send_message(f"<:stick:969703475720126464> - Criei o canal de texto {novo_canal.mention} para você.",ephemeral=True)
     else: await interaction.response.send_message(mensagemerro,ephemeral=True)
+
+
+
+
+
+
+
+
+
+
 
 #COMANDO INFO CANAL
   @canal.command(name="info",description='🗨️⠂Informações sobre um canal')
@@ -210,8 +341,36 @@ class admin(commands.Cog):
     resposta.add_field(name="📅⠂Data Criação", value=f"```{datetime.strftime(canal.created_at, '%d/%m/%Y')}```", inline=True)    
     await interaction.response.send_message(embed=resposta)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   #GRUPO CARGO 
   cargo=app_commands.Group(name="cargo",description="Comandos de cargo do bot.")
+
+
+
+
+
+
+
+
+
+
 
   #COMANDO ADD ROLE
   @cargo.command(name="adicionar",description='🔑⠂Adiciona um cargo a um membro')
@@ -235,6 +394,18 @@ class admin(commands.Cog):
     except discord.Forbidden:
       await interaction.response.send_message(erropermissão, ephemeral=True)
       
+
+
+
+
+
+
+
+
+
+
+
+
   #COMANDO REM ROLE
   @cargo.command(name="remover",description='🔑⠂Remove um cargo de um membro')
   @app_commands.describe(membro="informe um membro",cargo="qual cargo deseja remover do membro?")
@@ -257,6 +428,16 @@ class admin(commands.Cog):
     except discord.Forbidden:
       await interaction.response.send_message(erropermissão, ephemeral=True)
      
+
+
+
+
+
+
+
+
+
+
     #COMANDO SWITCH ROLE
   @cargo.command(name="trocar",description='🔑⠂Troca o cargo a um membro')
   @app_commands.describe(membro="informe um membro",retirar="qual cargo deseja remover do membro?",colocar="qual cargo deseja adicionar ao membro?")
@@ -277,6 +458,18 @@ class admin(commands.Cog):
     except discord.Forbidden:
       await interaction.response.send_message(erropermissão, ephemeral=True)
   
+
+
+
+
+
+
+
+
+
+
+
+
   #COMANDO CARGO INFO
   @cargo.command(name="info",description='🔑⠂Verifica as informações de um cargo')
   @app_commands.describe(cargo="selecione um cargo")
@@ -300,6 +493,17 @@ class admin(commands.Cog):
     members_with_role = len(cargo.members)
     resposta.add_field(name=f"💼⠂Membros", value=f"```{members_with_role} Usuários```", inline=True)
     await interaction.response.send_message(embed=resposta)
+
+
+
+
+
+
+
+
+
+
+
 
 async def setup(client:commands.Bot) -> None:
   await client.add_cog(admin(client))

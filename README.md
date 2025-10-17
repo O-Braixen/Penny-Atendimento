@@ -13,15 +13,15 @@ Todas os comandos estão com comentarios e explicados para facil modificação e
 
 **Segue as especificações desse codigo**
 
- - 3 Paineis de Dropdown (2 para um servidor e 1 para um segundo servidor);
+ - 2 Paineis de Dropdown (1 para um servidor e 1 para um segundo servidor);
  - Suporte aos paineis serem persistentes;
- - Adicionado suporte para salvar chat ao fechar ticket
  - Suporte a **context_menu** para alguns comandos
  - suporte a .env adicionado
  - **codigo em cog facil de receber updates**
  - varios comandos voltados para usuarios
  - comando de avaliação de atendimento **novo**
- - comando de abertura de ticket de entrevista **novo**
+ - Suporte A inteligencia artificial para atender os tickets
+ - Acompanhamento de ticket inativo
 
 **Lista dos comandos de context menu**
  - Usuario Avatar
@@ -32,12 +32,14 @@ Todas os comandos estão com comentarios e explicados para facil modificação e
 **Lista dos comandos**
 
 - /owner say
+- /owner embed
 - /owner listar
 - /owner sair
 - /owner bot-name
 - /owner bot-avatar
 ---------------------------
 - /bot ping
+- /bot limpar-dm
 - /bot info
 - /bot help
 ---------------------------
@@ -75,7 +77,6 @@ Todas os comandos estão com comentarios e explicados para facil modificação e
 - /cargo info
 ---------------------------
 - /painel suporte-bh
-- /painel servicos-bh
 - /painel tribunal
 ---------------------------
 - /atendimento fechar
@@ -83,7 +84,7 @@ Todas os comandos estão com comentarios e explicados para facil modificação e
 - /atendimento adicionar
 - /atendimento remover
 - /atendimento avaliar
-- /atendimento entrevista
+- /atendimento abrir-atendimento
 
 **Instruções de instalação**
 
@@ -99,3 +100,10 @@ Caso queira rodar localmente recomendo o uso do VScode e para instalar os requis
 - Token da square em square_token
 - Id do seu bot na square em square_idaplication
 - todas as outras variaveis de cargos e canais para funcionamento da parte de atendimento.
+
+
+**Parte da IA com CHARACTER.AI**
+
+Esse codigo utiliza o repositorio [PyCharacterAI](https://github.com/Xtr4F/PyCharacterAI) para o funcionamento da inteligencia artificial por ser uma solução de baixo custo e facil de implementar, siga o tutorial no repositorio deles para coletar o TOKEN da sua conta e o ID do personagem.
+
+É altamente recomendado você criar seu proprio personagem, assim pode treina-lo para responder adequadamente.

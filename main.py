@@ -1,10 +1,13 @@
 # AS IMPORTAÇÔES NECESSARIAS
-import discord,os
+import discord,os, platform, datetime
 from os import listdir
 from discord.ext import commands
 from discord.errors import HTTPException, LoginFailure
 from discord import app_commands
 from dotenv import load_dotenv
+
+
+
 
 
 # Verifica se o arquivo .env existe
@@ -13,11 +16,16 @@ if not os.path.exists('.env'):
     exit()
 
 
+
+
 #CARREGA E LE O ARQUIVO .env
 load_dotenv() #load .env
 token_bot = os.getenv("DISCORD_TOKEN") #acessa e define o token do bot
 donoid = os.getenv("DONO_ID") #acessa e define a ID do dono do bot
 prefixo = '-br' # Define o prefixo do bot, pode alterar se quiser
+
+
+
 
 
 #classe basica de iniciação do bot
@@ -28,15 +36,21 @@ class Client(commands.Bot):
         self.synced = False #Nós usamos isso para o bot não sincronizar os comandos mais de uma vez
         self.cogslist = []
         #o item a baixo faz a leitura da lista de cogs que são os outros arquivos de codigo separado e os registra.        
-        for cog in listdir("cogs"):
+        for cog in listdir("src/services/modules"):
             if cog.endswith(".py"):
                 cog = os.path.splitext(cog)[0]
-                self.cogslist.append('cogs.' + cog)
+                self.cogslist.append('src.services.modules.' + cog)
+
+
+
 
     #não sei, não mexe, só sei que precisa
     async def setup_hook(self):
       for ext in self.cogslist:
         await self.load_extension(ext)
+
+
+
 
     #On_ready do bot
     async def on_ready(self):
@@ -46,13 +60,20 @@ class Client(commands.Bot):
             await self.tree.sync()
             self.synced = True
             print(f"Comandos sicronizados: {self.synced}")
-        print(f"\no Bot {self.user} Já esta Online e disponivel")
-        print(f"\nID do dono é {donoid}")
+        print(f"🐍 - Versão do python: {platform.python_version()}")
+        print(f"🦊 - O Bot {self.user} já está online e disponível")
+        print(f"💖 - Estou em {len(self.guilds)} comunidades com um total de {len(self.users)} membros")
+        print(f"⏰ - A hora no sistema é {datetime.datetime.now().strftime('%d/%m/%Y às %H:%M:%S')}")
+        print(f"👤 - ID do dono é {donoid}\n\n")
     
+
+
 
 #COISA DO MAIN NÂO MEXER
 
 client = Client()
+
+
 
 #LIGA O BOT e o mantem online
 try:

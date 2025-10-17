@@ -4,8 +4,24 @@ from discord import app_commands,utils
 from datetime import datetime
 
 
+
+
+
+
 afklist = [] #Lista de usuarios afk vazia para ser usada depois
       #FUNCÔES AQUII EM BAIXO
+
+
+
+
+
+
+
+
+
+
+
+
 
 #FUNÇÂO USUARIO INFO
 async def buscaruser(interaction,membro,menu):
@@ -36,6 +52,18 @@ async def buscaruser(interaction,membro,menu):
   else: await interaction.response.send_message(embed=resposta)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 #Função USUARIO AVATAR
 async def buscaravatar(interaction,membro,menu):
   print (f"Usuario: {interaction.user.name} usou avatar")
@@ -55,6 +83,16 @@ async def buscaravatar(interaction,membro,menu):
   else: await interaction.response.send_message(embed=resposta,view=view)
 
 
+
+
+
+
+
+
+
+
+
+
 #FUNÇÂO USUARIO ABRAÇAR
 async def funcaoabracarusuario(interaction,membro):
   print (f"Usuario: {interaction.user.name} usou avatar")
@@ -67,6 +105,16 @@ async def funcaoabracarusuario(interaction,membro):
   resposta.set_image(url=f"{random.choice(imagem)}")
   await interaction.response.send_message(embed=resposta)
   
+
+
+
+
+
+
+
+
+
+
 
 
 #INICIO DA CLASSE
@@ -83,9 +131,27 @@ class misc(commands.Cog):
         self.client.tree.add_command(self.menu_userbanner)
         self.client.tree.add_command(self.menu_userabraco)
 
+
+
+
+
+
+
+
+
   @commands.Cog.listener()
   async def on_ready(self):
     print("Cog Misc carregado.")
+
+
+
+
+
+
+
+
+
+
 
   @commands.Cog.listener()
   #esse on_messagem é responsavel pelo sistema de avisos /bump e do afk dos usuarios
@@ -99,6 +165,7 @@ class misc(commands.Cog):
         return None
       break
     
+
     # essa parte aqui verifica se o bot disboard manda a confirmação de bump dele e essa parte pega e ativa o lembrete
     if message.author.bot and message.embeds:
       if message.embeds and message.embeds[0].description and "Bump done!" in message.embeds[0].description and message.author and message.author.id == 302050872383242240:
@@ -117,6 +184,14 @@ class misc(commands.Cog):
           await message.channel.send(f"<a:patpatBraixen:1112706846042628126>┃ Eaiii já podem dar </bump:947088344167366698> novamente! \n<:UlikeKissingBraixens:1108359276126285867> ┃ **Dica de raposa:** Crie em sua comunidade o cargo chamado `👍 Bump` para que eu possa notificar nele os proximos bumps ~kyu.")
 
 
+
+
+
+
+
+
+
+
   @commands.Cog.listener()
   #verifica todos os usuarios que digitam, se ele estiver na afklist ele desativa o afk automaticamente
   async def on_typing(self, channel, user, when):
@@ -130,6 +205,11 @@ class misc(commands.Cog):
       await msgenviada.delete()
 
 
+
+
+
+
+
   #Remove os menu se necessario - deixa isso aqui é importante ter
   async def cog_unload(self) -> None:
         self.client.tree.remove_command(self.menu_useravatar, type=self.menu_useravatar.type)
@@ -137,13 +217,45 @@ class misc(commands.Cog):
         self.client.tree.remove_command(self.menu_userbanner, type=self.menu_userbanner.type)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #GRUPO USUARIOS 
   usuario=app_commands.Group(name="usuario",description="Comandos de usuarios do bot.")
+
+
+
+
+
+
+
+
 
 #COMANDO USUARIO AVATAR MENU
   async def useravatarmenu(self,interaction: discord.Interaction, membro: discord.Member):
     menu = True
     await buscaravatar(interaction,membro,menu)# chama a função lá em cima
+
+
+
+
+
+
+
 
 #COMANDO USUARIO AVATAR SLASH
   @usuario.command(name="avatar",description='👤⠂Exibe o avatar de um membro')
@@ -152,10 +264,27 @@ class misc(commands.Cog):
     menu = False
     await buscaravatar(interaction,membro,menu)# chama a função lá em cima
 
+
+
+
+
+
+
+
+
+
 #COMANDO USUARIO INFO MENU
   async def userinfomenu(self,interaction: discord.Interaction, membro: discord.Member):
     menu = True
     await buscaruser(interaction,membro,menu)# chama a função lá em cima
+
+
+
+
+
+
+
+
 
 #COMANDO USUARIO INFO SLASH
   @usuario.command(name="info",description='👤⠂Verifica as informações de um membro')
@@ -164,15 +293,48 @@ class misc(commands.Cog):
     menu = False
     await buscaruser(interaction,membro,menu)# chama a função lá em cima
  
+
+
+
+
+
+
+
+
+
+
+
 #COMANDO USUARIO ABRAÇO MENU
   async def userabracomenu(self,interaction: discord.Interaction, membro: discord.Member):
     await funcaoabracarusuario(interaction,membro) # chama a função lá em cima
+
+
+
+
+
+
+
+
+
+
+
 
 #COMANDO USUARIO ABRAÇO SLASH
   @usuario.command(name="abraçar",description='👤⠂Abraçe um membro')
   @app_commands.describe(membro="informe um membro")
   async def userabraco(self,interaction: discord.Integration,membro: discord.Member):
     await funcaoabracarusuario(interaction,membro) # chama a função lá em cima
+
+
+
+
+
+
+
+
+
+
+
 
 #COMANDO USUARIO BANNER MENU
   async def userbannermenu(self,interaction: discord.Interaction, membro: discord.Member=None):
@@ -191,6 +353,15 @@ class misc(commands.Cog):
       view.add_item(item=item)
       await interaction.response.send_message(ephemeral=True,embed=resposta,view=view)
     else:await interaction.response.send_message(f"<:BraixBlank:969396003436380200> - Parece que o {membro.mention} não possui um banner kyu~~.", ephemeral=True)
+
+
+
+
+
+
+
+
+
 
 
 #COMANDO USUARIO BANNER SLASH
@@ -213,6 +384,17 @@ class misc(commands.Cog):
       await interaction.response.send_message(embed=resposta,view=view)
     else:await interaction.response.send_message(f"<:BraixBlank:969396003436380200> - Parece que o {membro.mention} não possui um banner kyu~~.", ephemeral=True)
 
+
+
+
+
+
+
+
+
+
+
+
 #COMANDO USUARIO ABRAÇO SLASH
   @usuario.command(name="atacar",description='👤⠂Ataque um membro')
   @app_commands.describe(membro="informe um alvo")
@@ -225,6 +407,17 @@ class misc(commands.Cog):
     resposta.set_image(url=f"https://64.media.tumblr.com/dcfc44e780bdf2427abdc852f960e981/tumblr_oktry4hti91tgjlm2o1_500.gif")
     await interaction.response.send_message(embed=resposta)
   
+
+
+
+
+
+
+
+
+
+
+
 #COMANDO USUARIO ABRAÇO SLASH
   @usuario.command(name="carinho",description='👤⠂Faça carinho em um membro')
   @app_commands.describe(membro="informe um membro")
@@ -237,6 +430,16 @@ class misc(commands.Cog):
     resposta.set_image(url=f"https://i.makeagif.com/media/6-13-2015/5aAShu.gif")
     await interaction.response.send_message(embed=resposta)
 
+
+
+
+
+
+
+
+
+
+
 #COMANDO USUARIO CAFUNÉ SLASH
   @usuario.command(name="cafuné",description='👤⠂Faça cafuné em um membro')
   @app_commands.describe(membro="informe um membro")
@@ -248,6 +451,17 @@ class misc(commands.Cog):
     )
     resposta.set_image(url=f"https://cdn.discordapp.com/attachments/1067789510097768528/1139147429367791696/Braixen_carinho.gif")
     await interaction.response.send_message(embed=resposta)
+
+
+
+
+
+
+
+
+
+
+
 
 
 #COMANDO USUARIO AFK
@@ -266,8 +480,39 @@ class misc(commands.Cog):
     await interaction.response.send_message(embed=resposta,ephemeral=True)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #GRUPO SERVIDOR 
   servidor=app_commands.Group(name="servidor",description="Comandos de usuarios do bot.")
+
+
+
+
+
+
+
+
+
+
 
 #COMANDO ICONE DE SERVIDOR
   @servidor.command(name="icone", description='🗄️⠂Exibe o ícone do servidor')
@@ -288,6 +533,17 @@ class misc(commands.Cog):
       await interaction.response.send_message(embed=resposta, view=view)
     else:
       await interaction.response.send_message("❌┃ O servidor não possui ícone.", ephemeral=True)
+
+
+
+
+
+
+
+
+
+
+
 
 
 #COMANDO BANNER DE SERVIDOR
@@ -311,6 +567,20 @@ class misc(commands.Cog):
       await interaction.response.send_message("❌┃ O servidor não possui um banner.", ephemeral=True)
     
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #COMANDO SPLASH DE SERVIDOR
   @servidor.command(name="splash", description='🗄️⠂Exibe a splash do servidor')
   async def splash(self, interaction: discord.Interaction):
@@ -331,6 +601,20 @@ class misc(commands.Cog):
         await interaction.response.send_message(embed=resposta, view=view)
     else:
         await interaction.response.send_message("❌┃ O servidor não possui uma splash definida.", ephemeral=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #COMANDO INFORMAÇÂO DE SERVIDOR
   @servidor.command(name="info", description='🗄️⠂Exibe informações sobre o servidor')
@@ -359,6 +643,20 @@ class misc(commands.Cog):
     resposta.add_field(name=":fox: Emojis", value=f"```Total: {len(servidor.emojis)}```")
 
     await interaction.response.send_message(embed=resposta)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 async def setup(client:commands.Bot) -> None:

@@ -1,4 +1,6 @@
 discord.py #python discord
 python-dotenv #dependencia dot env - responsavel por ler o arquivo .env
+audioop-lts
 PyNaCl
+PyCharacterAI #DEPENDENCIA DA INTELIGENCIA ARTIFICIAL
 requests
