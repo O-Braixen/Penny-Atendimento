@@ -413,9 +413,12 @@ class CreateTicket(discord.ui.View):
         # Mensagens iniciais da thread
         await thread.send(f"Avisando:<@{interaction.user.mention}> e colocando os <@&{staff}>")
         await thread.purge(limit=1)
+
+
         # CASO NÃO TENHA TICKET ABERTO CONTINUA AQUI E CRIA UMA 
         idatendimento = gerar_id_unica()
         aiid , msg , check  = await create_ai_chat()
+
         embedticket = discord.Embed( colour=discord.Color.from_str('#f4de77'),
             description=f"Atendimento: **{tipoticket}**\nResponsavel: <@&{staff}>\nID: **{idatendimento}**\nAtendente Atual: {interaction.client.user.name if check else '0'}\nAIID: {aiid}"
         )
@@ -427,10 +430,14 @@ class CreateTicket(discord.ui.View):
         instrucao = f"você está iniciando o atendimento do usuario {interaction.user.name} marca ele enviando {interaction.user.mention} e responda a ele de forma amigavel para iniciar uma conversa, informe que pode usar bots no canal, evite usar termos relacionados a horarios e o motivo do contato dele é {instrucaoIA}, apenas inicie o atendimento sem confirmar nada a essa mensagem."
         if check:
             async with thread.typing():
-                msg_ai = await response_ai_chat(aiid,instrucao)
+                await thread.send(msg)
+           
+            msg_ai = await response_ai_chat(aiid,instrucao)
+            
+            async with thread.typing():
                 await thread.send(msg_ai)
         
-        else:
+        else: # RETORNO PADRÂO CASO FALHE O PEDIDO DE IA
             await thread.send("Kyu~! Minha inteligência artificial está indisponível no momento 💛\nPor favor, descreva sua solicitação e aguarde que um atendente humano irá ajudá-lo em breve, tá bem? 🌸")
 
 
@@ -590,16 +597,32 @@ async def encerrar_thread(thread: discord.Thread, servidor: discord.Guild, membr
     except Exception as e:
         print(f"[ERRO] Falha ao renomear thread: {e}")
 
-    # Remove o usuário (ignora erro se já saiu)
+    # Remove todos os membros, exceto o bot
     try:
-        await thread.remove_user(membro)
+        async for participante in thread.fetch_members():
+            if participante.id != thread.guild.me.id:
+                try:
+                    await thread.remove_user(participante)
+                except:
+                    pass
+    except Exception as e:
+        print(f"[ERRO] Falha ao remover membros: {e}")
+
+    # Envia mensagem final e sai da thread
+    try:
+        await thread.send(Res.trad_nada(str="message_confirm_arquivamento"))
+        await asyncio.sleep(2)
     except:
         pass
 
-    # Arquiva e tranca
-    await asyncio.sleep(1)
-    await thread.edit(archived=True, locked=True)
-    await thread.send(Res.trad_nada(str="message_confirm_arquivamento"))
+    # Arquiva, tranca e o bot sai da thread
+    try:
+        await thread.edit(archived=True, locked=True)
+        await asyncio.sleep(1)
+        await thread.leave()
+        print(f"[LOG] Thread {thread.name} encerrada e o bot saiu com sucesso.")
+    except Exception as e:
+        print(f"[ERRO] Falha ao arquivar/sair da thread: {e}")
 
 
 
@@ -647,15 +670,15 @@ class DeleteTicket(discord.ui.View):
         if str(interaction.user.id) in interaction.channel.name or mod in interaction.user.roles or mod2 in interaction.user.roles:
             await interaction.response.send_message(Res.trad_nada(str="message_encerrar_ticket"),ephemeral=True)
             await asyncio.sleep(2)
-            await encerrar_thread( interaction.channel, interaction.guild ,interaction.user) 
+            membro_id = interaction.channel.name.split('-')[-1]
+            usuario = interaction.client.get_user(int(membro_id))
+            await encerrar_thread( interaction.channel, interaction.guild ,usuario) 
             try:
-                membro_id = interaction.channel.name.split('-')[-1]
-                usuario = interaction.guild.get_member(int(membro_id))
                 resposta = discord.Embed( colour=discord.Color.from_str('#f4de77'), description=Res.trad_nada(str="message_encerrar_ticket_embed_description"))   
                 resposta.set_thumbnail(url="https://i.imgur.com/ixqtABY.png")
                 resposta.set_footer(text=Res.trad_nada(str="message_encerrar_ticket_embed_footer"))
                 await usuario.send(embed=resposta)
-            except: print(f"falha ao agradecer o membro {usuario.name} - {usuario.id}")
+            except: print(f"falha ao agradecer o membro {membro_id}")
         else:
             # se falso manda isso ai em baixo
             await interaction.response.send_message(mensagemerro)
@@ -907,9 +930,9 @@ class atendimento(commands.Cog):
                         if message.author == self.client.user:
                             await thread.send(Res.trad_nada(str="mensagem_fechamento_ticket"))
                             await asyncio.sleep(5)
-                            await encerrar_thread(thread, guild, self.client.user)
+                            usuario = await self.client.fetch_user(solicitante)
+                            await encerrar_thread(thread, guild, usuario)
                             try:
-                                usuario = await self.client.fetch_user(solicitante)
                                 resposta = discord.Embed(
                                     colour=discord.Color.from_str('#f4de77'),
                                     description=Res.trad_nada(str="mensagem_fechamento_ticket_embed_description").format(atendimento_id)
@@ -948,37 +971,48 @@ class atendimento(commands.Cog):
 
 
     #COMANDO ABRIR ATENDIMENTO MENU
-    async def abrirticketmenu(self,interaction: discord.Interaction,membro: discord.Member):
-        print (f"Usuario: {interaction.user.name} usou Abrir Ticket")
+    async def abrirticketmenu(self, interaction: discord.Interaction, membro: discord.Member):
+        print(f"Usuário: {interaction.user.name} usou Abrir Ticket")
         await interaction.response.defer(ephemeral=True)
+
+        idatendimento = gerar_id_unica()
+        tipoticket = "Outros Motivos"
+
+        # Define os dados conforme o servidor
         if interaction.guild.id == id_servidor_bh:
-            atendente = interaction.guild.get_role(id_cargo_atendente)
-            categoria = interaction.guild.get_channel(id_atendimento_principal)
+            staff = id_cargo_atendente
+            canal_atendimento = interaction.guild.get_channel(id_atendimento_principal)
         elif interaction.guild.id == id_servidor_tribunal:
-            atendente = interaction.guild.get_role(id_cargo_tribunal)
-            categoria = interaction.guild.get_channel(id_atendimento_tribunal)
+            staff = id_cargo_tribunal
+            canal_atendimento = interaction.guild.get_channel(id_atendimento_tribunal)
         else:
-            await interaction.followup.send(ephemeral=True, content="<:ew:969703224825225266> Ue? Isso não funcionou como deveria... \nEsse comando é de uso exclusivo da staff nas comunidades Braixen's House <:derp:969703169670131812>")
+            await interaction.followup.send(ephemeral=True, content=Res.trad_nada(str="message_error_onlyBHTR"))
             return
-        overwrites = {
-            interaction.guild.default_role: discord.PermissionOverwrite(read_messages=False,send_messages=True,attach_files=True,use_application_commands=True),
-            interaction.user: discord.PermissionOverwrite(read_messages=True,send_messages=True),
-            membro: discord.PermissionOverwrite(read_messages=True,send_messages=True),
-            atendente: discord.PermissionOverwrite(read_messages=True,send_messages=True)
-        }
-        if atendente in interaction.user.roles:
-            ticket = await interaction.guild.create_text_channel(f"🦊┃{membro.name}-{membro.id}",overwrites=overwrites,category=categoria)
-            await interaction.followup.send(ephemeral=True,content=f"Criei um ticket para você! Acessa ele ai \n{ticket.mention}")
-            embedticket = discord.Embed(
-                colour=discord.Color.yellow(),
-                #title="Atendimento Braixen's House",
-                description=f"**Olá {membro.mention}**, Bem-vindo(a) ao nosso atendimento.\n\nEsse Ticket foi aberto **diretamente pela adminstração do servidor** a fim de resolver algum problema com você então pedimos que **aguarde a nossa equipe conversar com você.**"
-            )
-            embedticket.set_author(name=f"{self.client.user.name}",icon_url=f"{self.client.user.avatar.url}")
-            embedticket.set_thumbnail(url="https://i.imgur.com/ixqtABY.png")
-            await ticket.send(f"Esse Ticket foi aberto pelo administrador {interaction.user.mention} para realizar o atendimento exclusivo do membro {membro.mention}\n\n",embed=embedticket)
-        else:
-            await interaction.followup.send(ephemeral=True,content=mensagemerro)
+
+        # Cria embed no mesmo padrão do CreateTicket
+        embedticket = discord.Embed(
+            colour=discord.Color.from_str('#f4de77'),
+            description=( f"Atendimento: **{tipoticket}**\n" f"Responsável: <@&{staff}>\n" f"ID: **{idatendimento}**\n" f"Atendente Atual: {interaction.user.mention}\n" f"AIID: 0" )
+        )
+        embedticket.set_thumbnail(url="https://i.imgur.com/ixqtABY.png")
+        embedticket.set_footer(text="Use o botão Finalizar Atendimento para encerrar seu atendimento!")
+
+        # Cria a thread no canal de atendimento
+        nome_thread = f"🦊┃{membro.name.lower().replace(' ', '-')}-{membro.id}"
+        thread = await canal_atendimento.create_thread( name=nome_thread, type=discord.ChannelType.private_thread, invitable=False )
+
+        # Envia mensagem de confirmação para quem abriu
+        view = discord.ui.View()
+        btn = discord.ui.Button( style=discord.ButtonStyle.gray, label=f"Ticket de {membro.name}", url=f"https://discord.com/channels/{interaction.guild.id}/{thread.id}" )
+        view.add_item(btn)
+        await interaction.followup.send( content=f"<:BH_Braix_Happy4:1154338634011521054> Ticket criado com sucesso! 🎉", view=view )
+
+        # Mensagens iniciais no ticket
+        await thread.send(f"Avisando: {membro.mention} e notificando <@&{staff}>")
+        await asyncio.sleep(0.5)
+        await thread.purge(limit=1)
+        await thread.send(embed=embedticket, view=FinalizarTicket())
+        await thread.send(f"💛 Este ticket foi aberto pelo administrador {interaction.user.mention} para realizar um atendimento exclusivo ao membro {membro.mention}, kyu~!")
 
 
 
